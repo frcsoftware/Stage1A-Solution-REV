@@ -17,6 +17,13 @@ import org.wpilib.framework.OpModeRobot;
 import org.wpilib.hardware.imu.OnboardIMU;
 import org.wpilib.hardware.imu.OnboardIMU.MountOrientation;
 
+/**
+ * The methods in this class are called automatically as described in the OpModeRobot documentation.
+ * OpMode classes anywhere in the package (or sub-packages) where this class is located are
+ * automatically registered to display in the Driver Station. If you change the name of this class
+ * or the package after creating this project, you must also update the Main.java file in the
+ * project.
+ */
 public class Robot extends OpModeRobot {
 
   private SparkMax leftLeader = new SparkMax(0, 0, MotorType.kBrushless);
@@ -24,9 +31,13 @@ public class Robot extends OpModeRobot {
   private SparkMax rightLeader = new SparkMax(0, 2, MotorType.kBrushless);
   private SparkMax rightFollower = new SparkMax(0, 3, MotorType.kBrushless);
 
+  public final DifferentialDrive drivetrain =
+      new DifferentialDrive(leftLeader::setThrottle, rightLeader::setThrottle);
+
   private OnboardIMU imu = new OnboardIMU(MountOrientation.FLAT);
 
   private DrivetrainSim drivetrainSim = new DrivetrainSim(leftLeader, rightLeader);
+
   public SparkMax intakeLauncher = new SparkMax(0, 4, MotorType.kBrushless);
   public SparkMax feeder = new SparkMax(0, 5, MotorType.kBrushless);
 
@@ -34,12 +45,13 @@ public class Robot extends OpModeRobot {
       new SingleFlywheelSim(intakeLauncher, "IntakeLauncher");
   private SingleFlywheelSim feederSim = new SingleFlywheelSim(feeder, "Feeder");
 
-  public final DifferentialDrive drivetrain =
-      new DifferentialDrive(leftLeader::setThrottle, rightLeader::setThrottle);
-
+  /**
+   * This function is run when the robot is first started up and should be used for any
+   * initialization code.
+   */
   public Robot() {
-
-    var leftConfig = new SparkMaxConfig().inverted(true);
+    var leftConfig = new SparkMaxConfig();
+    leftConfig.inverted(true);
     leftLeader.configure(
         leftConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     leftFollower.configure(
@@ -47,7 +59,8 @@ public class Robot extends OpModeRobot {
         ResetMode.kResetSafeParameters,
         PersistMode.kPersistParameters);
 
-    var rightConfig = new SparkMaxConfig().inverted(false);
+    var rightConfig = new SparkMaxConfig();
+    rightConfig.inverted(false);
     rightLeader.configure(
         rightConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     rightFollower.configure(
@@ -55,6 +68,7 @@ public class Robot extends OpModeRobot {
         ResetMode.kResetSafeParameters,
         PersistMode.kPersistParameters);
   }
+
 
   @Override
   public void simulationPeriodic() {
