@@ -28,23 +28,24 @@ import org.wpilib.hardware.imu.OnboardIMU.MountOrientation;
  */
 public class Robot extends OpModeRobot {
 
-  private SparkMax leftLeader = new SparkMax(CANPort.CAN_S0, 0, MotorType.kBrushless);
-  private SparkMax leftFollower = new SparkMax(CANPort.CAN_S0, 1, MotorType.kBrushless);
-  private SparkMax rightLeader = new SparkMax(CANPort.CAN_S0, 2, MotorType.kBrushless);
-  private SparkMax rightFollower = new SparkMax(CANPort.CAN_S0, 3, MotorType.kBrushless);
+  private final SparkMax leftLeader = new SparkMax(CANPort.CAN_S0, 0, MotorType.kBrushless);
+  private final SparkMax leftFollower = new SparkMax(CANPort.CAN_S0, 1, MotorType.kBrushless);
+  private final SparkMax rightLeader = new SparkMax(CANPort.CAN_S0, 2, MotorType.kBrushless);
+  private final SparkMax rightFollower = new SparkMax(CANPort.CAN_S0, 3, MotorType.kBrushless);
 
   public final DifferentialDrive drivetrain =
       new DifferentialDrive(leftLeader::setThrottle, rightLeader::setThrottle);
 
-  private OnboardIMU imu = new OnboardIMU(MountOrientation.FLAT);
+  private final OnboardIMU imu = new OnboardIMU(MountOrientation.FLAT);
 
-  private DrivetrainSim drivetrainSim = new DrivetrainSim(leftLeader, rightLeader);
+  private final DrivetrainSim drivetrainSim = new DrivetrainSim(leftLeader, rightLeader);
 
-  public SparkMax intakeLauncher = new SparkMax(CANPort.CAN_S0, 4, MotorType.kBrushless);
-  public SparkMax feeder = new SparkMax(CANPort.CAN_S0, 5, MotorType.kBrushless);
+  public final SparkMax intakeLauncher = new SparkMax(CANPort.CAN_S0, 4, MotorType.kBrushless);
+  public final SparkMax feeder = new SparkMax(CANPort.CAN_S0, 5, MotorType.kBrushless);
 
-  private SingleFlywheelSim intakeLauncherSim = SingleFlywheelSim.forIntakeLauncher(intakeLauncher);
-  private SingleFlywheelSim feederSim = SingleFlywheelSim.forFeeder(feeder);
+  private final SingleFlywheelSim intakeLauncherSim =
+      SingleFlywheelSim.forIntakeLauncher(intakeLauncher);
+  private final SingleFlywheelSim feederSim = SingleFlywheelSim.forFeeder(feeder);
 
 
   /**
@@ -52,7 +53,7 @@ public class Robot extends OpModeRobot {
    * initialization code.
    */
   public Robot() {
-    var leftConfig = new SparkMaxConfig();
+    SparkMaxConfig leftConfig = new SparkMaxConfig();
     leftConfig.inverted(true);
     leftLeader.configure(
         leftConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
@@ -61,7 +62,7 @@ public class Robot extends OpModeRobot {
         ResetMode.kResetSafeParameters,
         PersistMode.kPersistParameters);
 
-    var rightConfig = new SparkMaxConfig();
+    SparkMaxConfig rightConfig = new SparkMaxConfig();
     rightConfig.inverted(false);
     rightLeader.configure(
         rightConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
